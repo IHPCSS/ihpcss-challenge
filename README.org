@@ -1,0 +1,5 @@
+* IHPCSS Programming Challenge
+
+** Details of Running
+
+*** TODO bridges information
