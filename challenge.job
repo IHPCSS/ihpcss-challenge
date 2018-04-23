@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# This script will run a 2-node CPU job in the reservation for the
+# Hybrid challenge
+#
+# It is set up to run 16 MPI processes, 8 on each node, where each process
+# uses 4 OpenMP threads. This uses all 64 cores on the two 32-core nodes.
+#
+# You should compile with the Intel compilers:
+# mpiicc  -qopenmp ...
+# mpiif90 -qopenmp ...
+
+#SBATCH -p GPU
+#SBATCH --reservation=xxx
+#SBATCH --gres=gpu:p100:2
+#SBATCH -N 2
+#SBATCH -t 00:01:00
+#SBATCH --ntasks-per-node 8
+
+export I_MPI_JOB_RESPECT_PROCESS_PLACEMENT=0
+export I_MPI_PIN_DOMAIN=omp
+
+export OMP_NUM_THREADS=4
+
+mpirun -ppn 8 -n 16 ./laplace_hybrid
